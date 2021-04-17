@@ -1,2 +1,3 @@
 # cheat-pizzuno
-Allow you to see the card of your oponent
+Just copy paste the script in tamper monkey
+
