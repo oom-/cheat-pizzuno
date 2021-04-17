@@ -1,0 +1,42 @@
+// ==UserScript==
+// @name         Pizz.uno card discover
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       OOM
+// @match        https://pizz.uno/multiplayer*
+// @icon         https://www.google.com/s2/favicons?domain=pizz.uno
+// @grant        none
+// @require      https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js
+// ==/UserScript==
+
+(function() {
+    let px = "[Pizz.Uno-Bot311]: ";
+    console.log(px+"Pizz.uno card discover loaded...");
+    let roomId = document.URL.substring(document.URL.indexOf("room=") + 5);
+    console.log(px+"Room id detected: " + roomId);
+    var socket = io.connect('https://server.pizz.uno');
+    console.log(socket);
+     socket.emit("joinRoom", roomId);
+    socket.on("connect", function (e){
+        console.log(px+"Connected");
+        socket.emit("joinRoom", roomId);
+    });
+    socket.on("updateState", function (e){
+        let cards = e.hands[1].cards;
+        /*
+           color: "blue"
+           id: "Qa1yp"
+           isColorless: false
+           isDrawCard: false
+           symbol: 4
+           type: "numeric"
+        */
+        let topHandCards = [...document.querySelectorAll('div.cards-hand.top-hand div.card')];
+        for (var index in topHandCards)
+        {
+            topHandCards[index].className = `card ${cards[index].color} ${cards[index].type} num-${cards[index].symbol} playble`;
+            topHandCards[index].innerHTML = `<span class="inner"><span class="card-symbol ${cards[index].type}">${cards[index].symbol}</span></span>`;
+        }
+    });
+})();
