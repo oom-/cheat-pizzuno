@@ -3,7 +3,7 @@ Just copy paste the script in tamper monkey and go to play on https://pizz.uno/
 
 **Note:** If the bot cannot connect anymore it can come from the socket.io version. See `@require` line to try to fix it yourself.
 
-**Note:** Works for all cards on the tables (including deck)
+**Note:** Work for all cards on the tables (including deck)
 
 ![alt text](https://github.com/oom-/cheat-pizzuno/blob/main/screenshoot2.jpg?raw=true)
 
