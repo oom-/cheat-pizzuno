@@ -22,8 +22,8 @@
         console.log(px+"Connected");
         socket.emit("joinRoom", roomId);
     });
-    socket.on("updateState", function (e){
-        let cards = e.hands[1].cards;
+    socket.on("updateState", function (msg){
+        let cards = [...msg.deck.cards, ...msg.hands.flat().map(h => h.cards).flat()];
         /*
            color: "blue"
            id: "Qa1yp"
@@ -32,11 +32,15 @@
            symbol: 4
            type: "numeric"
         */
-        let topHandCards = [...document.querySelectorAll('div.cards-hand.top-hand div.card')];
-        for (var index in topHandCards)
+        for(var card of cards)
         {
-            topHandCards[index].className = `card ${cards[index].color} ${cards[index].type} num-${cards[index].symbol} playble`;
-            topHandCards[index].innerHTML = `<span class="inner"><span class="card-symbol ${cards[index].type}">${cards[index].symbol}</span></span>`;
+            let element = document.getElementById(card.id);
+            if (element.className.indexOf('card') != -1 &&
+                element.className.indexOf('back') != -1) //edit the card to "return" it
+            {
+                element.className = `card ${card.color} ${card.type} num-${card.symbol} playble`;
+                element.innerHTML = `<span class="inner"><span class="card-symbol ${card.type}">${card.symbol}</span></span>`;
+            }
         }
     });
 })();
